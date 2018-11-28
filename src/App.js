@@ -1,28 +1,32 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Table from "./components/Table/Table";
+import TableRow from './components/Table/Table.Row';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+import data from "../src/data.json";
+
+console.log(data);
+
+function App() {
+  const mainData = data.map(item => item.data);
+  const mainHeading = Object.keys(data[0].data);
+
+  // const childrenData = data
+  //   .filter(item => item.kids.has_relatives)
+  //   .map(item => item.kids.has_relatives.records)
+  //   .map(item => item[0].data);
+  // console.log(childrenData);
+  console.log(mainData[0], 'hey');
+  return (
+    <div>
+      <section>
+        <div className="container">
+          <h3>Ataccama</h3>
+          <Table heading={mainHeading}>
+            <TableRow data={mainData[0]} />
+          </Table>
+        </div>
+      </section>
+    </div>
+  );
 }
-
 export default App;
