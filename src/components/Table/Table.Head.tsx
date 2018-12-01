@@ -1,6 +1,4 @@
 import React from "react";
-import styled from "styled-components";
-
 import { Row, Cell, Head } from "./styles";
 
 ////////////////////// Props

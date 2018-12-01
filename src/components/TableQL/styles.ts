@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+export const Container = styled.div`
   width: 100%;
   overflow: auto;
 `;
@@ -25,9 +25,6 @@ export const Body = styled.div`
 
 export const Row = styled.div`
   display: table-row;
-  &:hover {
-    background-color: #f7f7f7;
-  }
 `;
 
 //////////////////////// RowSpan
@@ -41,7 +38,9 @@ export const RowSpan = styled(Row)`
 export const RowSpanWrap = styled.div`
   position: absolute;
   width: 100%;
-  background-color: lightblue;
+  max-width: 100%;
+  background-color: #f6f6f9;
+  border: 1px solid red;
   border-bottom: 8px solid #f7f6fa;
   height: ${(props: RowProps) => props.height}px;
 `;
