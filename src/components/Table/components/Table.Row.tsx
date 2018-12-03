@@ -1,18 +1,27 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+
+// Store
+import { removeItem } from "../store/tableStore";
+
+// Styled
 import { Row, Cell, IconCell } from "../styles";
 
+// Table Items
 import Collapse from "./Table.Collapse";
 import TableChild from "./Table.Child";
 
+///////////////////////////////// Props
 
-//////////////////////////////////////////// Props
 type PropsType = {
   _id?: string | null;
   data: any;
+  removeRow(id: string): void
   hasChildren: boolean;
 };
 
 const defaultProps: PropsType = {
+  removeRow: () => {},
   data: { data: {}, children: null },
   hasChildren: false
 };
@@ -23,7 +32,7 @@ type StateType = {
   showChildren: boolean;
 };
 
-//////////////////////////////////////////// UI Component
+////////////////////////////////////////////// UI Component
 
 class TableRow extends Component<PropsType, StateType> {
   static defaultProps = defaultProps;
@@ -35,8 +44,9 @@ class TableRow extends Component<PropsType, StateType> {
     this.setState(prev => ({ showChildren: !prev.showChildren }));
   };
   clickHandler = () => {
-    console.log('hey', this.props._id);
-  }
+    const { _id, removeRow } = this.props;
+    if (_id && removeRow) removeRow(_id);
+  };
 
   _renderCell(value: string, index: number) {
     const key = `row_inner_${index}`;
@@ -68,4 +78,12 @@ class TableRow extends Component<PropsType, StateType> {
   }
 }
 
-export default TableRow;
+////////////////////////////////// Connect
+
+const mapDispatchToProps = (dispatch: any) => ({
+  removeRow(id: string) {
+    dispatch(removeItem(id));
+  }
+});
+
+export default connect(null, mapDispatchToProps)(TableRow);

@@ -1,26 +1,27 @@
 import React from "react";
+import { Provider } from "react-redux";
 
-// Styled Components
-import { Container } from "./styles";
-
-// Interface
+import Table from "./Table";
+import tableStore, { registerTable } from "./store/tableStore";
 import { graphCreator } from "./tableGraph";
 
-// Factories
-import { tableFactory } from "./tableFactory";
-
-//////////////////////////////////////////// Props
+///////////////////////////// Types
 
 type PropsType = {
   data: any[];
 };
 
-//////////////////////////////////////////// UI Component
+/////////////////////////////////////////// UI Provider
 
-function Table(props: PropsType) {
+function TableProvider(props: PropsType) {
   const { data } = props;
   const graphData = graphCreator(data);
-  return <Container>{tableFactory(graphData)}</Container>;
+  tableStore.dispatch(registerTable(graphData));
+  return (
+    <Provider store={tableStore}>
+      <Table />
+    </Provider>
+  );
 }
 
-export default Table;
+export default TableProvider;

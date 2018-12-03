@@ -14,8 +14,6 @@ export type RowType = {
   [key: string]: any;
 };
 
-
-
 export type JsonType = {
   data: {
     [key: string]: string

@@ -77,6 +77,6 @@ export function graphCreator(jsonData: JsonType[]): TableType {
     graph.rows.push(data);
     graph.headers = union(graph.headers, _keys);
   });
-  console.log(graph);
+  //console.log(graph);
   return graph;
 }
