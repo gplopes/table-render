@@ -1,5 +1,8 @@
-const grey = "#f6f6f9";
+
+const bg = "#f4f8f9";
+const blue = "#412ae1";
 
 export default {
-  grey
+  bg,
+  blue
 };

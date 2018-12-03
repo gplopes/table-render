@@ -1,58 +1,55 @@
 import styled from "styled-components";
+import { colors } from "../../styles";
 
-export const Wrapper = styled.div`
+
+export const Container = styled.div`
   width: 100%;
   overflow: auto;
 `;
 
-export const Table = styled.div`
-  display: table;
-  width: 100%;
-`;
-
-export const Head = styled.div`
-  display: table-header-group;
-  color: #839ba6;
+export const Caption = styled.caption`
+  text-align: left;
+  font-size: 13px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  font-size: 11px;
+  opacity: 0.5;
   font-weight: bold;
 `;
 
-export const Body = styled.div`
-  display: table-row-group;
-  background-color: white;
-`;
-
-export const Row = styled.div`
-  display: table-row;
-  &:hover {
-    background-color: #f7f7f7;
+export const Row = styled.tr`
+  position: relative;
+  border-bottom: 10px solid ${colors.bg};
+  td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
   }
 `;
 
-//////////////////////// RowSpan
-interface RowProps {
-  height: number;
-};
-export const RowSpan = styled(Row)`
-  height: ${(props: RowProps) => props.height}px;
+export const LineIndicator = styled.td`
+  border-right: 2px solid ${({ color }) => color};
 `;
 
-export const RowSpanWrap = styled.div`
-  position: absolute;
-  width: 100%;
-  background-color: lightblue;
-  border-bottom: 8px solid #f7f6fa;
-  height: ${(props: RowProps) => props.height}px;
-`;
-
-
-export const Cell = styled.div`
-  padding: 10px 15px;
+export const Cell = styled.td`
+  padding: 20px 15px;
+  background-color: white;
   white-space: nowrap;
-  display: table-cell;
-  border-bottom: 8px solid #f7f6fa;
   &:nth-child(n + 3) {
     border-left: 1px solid #f0f0f3;
   }
+`;
+
+export const CellSpan = styled(Cell)`
+  background: ${colors.bg};
+`;
+
+export const Title = styled(Cell)`
+  color: #839ba6;
+  background-color: transparent;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
 `;
