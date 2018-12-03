@@ -3,13 +3,13 @@ import { Title } from "../styles";
 
 ///////////////////////////////////////////////////////// Props
 
-type Props = {
+type PropsType = {
   data: string[] | null;
 };
 
 /////////////////////////////////////////////////////// UI
 
-function TableHead(props: Props) {
+function TableHead(props: PropsType) {
   const { data } = props;
   return (
     data && (

@@ -19,7 +19,7 @@ export const Caption = styled.caption`
 export const Row = styled.tr`
   position: relative;
   border-bottom: 10px solid ${colors.bg};
-  td:first-child {
+  td:nth-child(2) {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
   }
@@ -34,12 +34,18 @@ export const LineIndicator = styled.td`
 `;
 
 export const Cell = styled.td`
+  text-align: center;
   padding: 20px 15px;
   background-color: white;
   white-space: nowrap;
   &:nth-child(n + 3) {
     border-left: 1px solid #f0f0f3;
   }
+`;
+
+export const IconCell = styled(Cell)`
+  cursor: pointer;
+  background-color: transparent;
 `;
 
 export const CellSpan = styled(Cell)`

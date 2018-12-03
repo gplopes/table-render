@@ -1,7 +1,8 @@
 import union from "lodash/union";
 import isEqual from "lodash/isEqual";
+import uniqid from "uniqid";
 
-import { RowType, TableType, JsonType } from './types';
+import { RowType, TableType, JsonType } from "./types";
 
 ///////////////////////////////////////////////////////////// Types
 
@@ -11,25 +12,29 @@ type GetRowDataType = {
 };
 
 ///////////////////////////////////////////////////////////// Types
-
-function getChildren(layer: any, graphChild: any, path?: string) {
+function getChildren(layer: any, tableChild: TableType | null, path?: string) {
   if (layer instanceof Array) {
     layer.forEach(item => {
-      if (item.data) {
+      if (item.data && tableChild) {
         const { data, _keys } = getRowData(item);
-        graphChild.title += `/${path}`;
-        graphChild.headers = !graphChild.headers
-          ? union(graphChild.headers, _keys)
-          : graphChild.headers;
-        isEqual(graphChild.headers, _keys) && graphChild.rows.push(data);
+
+        // Table Heads
+        tableChild.headers = !tableChild.headers
+          ? union(tableChild.headers, _keys)
+          : tableChild.headers;
+
+        // Table Rows
+        isEqual(tableChild.headers, _keys) && tableChild.rows.push(data);
       }
-      getChildren(item, graphChild, path);
+      getChildren(item, tableChild, path);
     });
   } else if (typeof layer === "object") {
     for (let prop of Object.keys(layer)) {
       if (prop !== "data" && typeof layer[prop] !== "string") {
-        //console.log("object prop =>", title);
-        getChildren(layer[prop], graphChild, prop);
+        getChildren(layer[prop], tableChild, prop);
+        if (tableChild && path !== null && path !== undefined) {
+          tableChild.title = `/${path}`;
+        }
       }
     }
   }
@@ -38,22 +43,26 @@ function getChildren(layer: any, graphChild: any, path?: string) {
 ///////////////////////////////////////////////////////////// Get All Row+Children Data
 
 function getRowData(dataLayer: JsonType): GetRowDataType {
-  let rowData: RowType = { data: {}, children: null };
+  const rowID: string = uniqid();
   let _children: object | null = null;
   let _keys: string[] = [];
+  let rowData: RowType = {
+    _id: null,
+    data: {},
+    children: { rows: [], headers: null, title: null }
+  };
 
   if (typeof dataLayer === "object") {
     const data = dataLayer.data;
     rowData.data = data;
+    rowData._id = rowID;
 
     _keys = Object.keys(data);
     _children = Object.keys(dataLayer)
       .filter(key => key !== "data")
       .map(key => dataLayer[key]);
   }
-
-  rowData.children = { rows: [], headers: [], title: null };
-  getChildren(_children, rowData.children);
+  _children && getChildren(_children, rowData.children);
 
   return { data: rowData, _keys };
 }
@@ -61,12 +70,13 @@ function getRowData(dataLayer: JsonType): GetRowDataType {
 ///////////////////////////////////////////////////////////// Table Graph Creator
 
 export function graphCreator(jsonData: JsonType[]): TableType {
-  const graph: TableType = { rows: [], headers: [] };
+  const graph: TableType = { rows: [], headers: null };
 
   jsonData.forEach((dataLayer: JsonType) => {
     const { data, _keys } = getRowData(dataLayer);
     graph.rows.push(data);
     graph.headers = union(graph.headers, _keys);
   });
+  console.log(graph);
   return graph;
 }

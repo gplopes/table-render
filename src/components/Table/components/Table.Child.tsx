@@ -5,13 +5,13 @@ import { Row, CellSpan, LineIndicator } from "../styles";
 
 ///////////////////////////////////// Props
 
-type Props = {
+type PropsType = {
   children: ReactNode;
 };
 
 ///////////////////////////////////// Component
 
-function TableChild(props: Props) {
+function TableChild(props: PropsType) {
   const color = randomColor({ luminosity: "dark" });
   return (
     <Row>

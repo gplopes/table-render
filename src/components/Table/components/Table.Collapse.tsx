@@ -1,28 +1,28 @@
 import React from "react";
-import { FiChevronRight, FiChevronDown } from "react-icons/fi";
+import { FiChevronRight, FiChevronDown, FiTrash } from "react-icons/fi";
 
-import { Cell } from "../styles";
+import { IconCell } from "../styles";
 
 ///////////////////////////////////// Props
 
-type Props = {
+type PropsType = {
   toggle(): void;
   open?: boolean;
 };
 
-const defaultProps: Props = {
+const defaultProps: PropsType = {
   toggle: () => {},
   open: false
 };
 
 //////////////////////////////////// UI
 
-function Collapse(props: Props = defaultProps) {
+function Collapse(props: PropsType = defaultProps) {
   const Icon = props.open ? FiChevronDown : FiChevronRight;
   return (
-    <Cell>
-      <Icon onClick={props.toggle} />
-    </Cell>
+    <IconCell onClick={props.toggle}>
+      <Icon />
+    </IconCell>
   );
 }
 

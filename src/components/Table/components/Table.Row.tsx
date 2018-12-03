@@ -1,14 +1,13 @@
 import React, { Component, Fragment } from "react";
-import { Row, Cell } from "../styles";
+import { Row, Cell, IconCell } from "../styles";
 
 import Collapse from "./Table.Collapse";
 import TableChild from "./Table.Child";
 
-import { RowType } from "../types";
 
 //////////////////////////////////////////// Props
-
 type PropsType = {
+  _id?: string | null;
   data: any;
   hasChildren: boolean;
 };
@@ -35,6 +34,9 @@ class TableRow extends Component<PropsType, StateType> {
   toggleHandler = () => {
     this.setState(prev => ({ showChildren: !prev.showChildren }));
   };
+  clickHandler = () => {
+    console.log('hey', this.props._id);
+  }
 
   _renderCell(value: string, index: number) {
     const key = `row_inner_${index}`;
@@ -47,7 +49,7 @@ class TableRow extends Component<PropsType, StateType> {
       toggle: this.toggleHandler,
       open: this.state.showChildren
     };
-    return !hasChildren ? <Collapse {...collapseProps} /> : <Cell />;
+    return hasChildren ? <Collapse {...collapseProps} /> : <IconCell />;
   };
 
   render() {
@@ -56,7 +58,7 @@ class TableRow extends Component<PropsType, StateType> {
     const dataValues = Object.keys(data).map((key: string) => data[key]);
     return (
       <Fragment>
-        <Row>
+        <Row onClick={this.clickHandler}>
           {this._renderToggler()}
           {dataValues.map(this._renderCell)}
         </Row>

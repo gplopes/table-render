@@ -8,7 +8,7 @@ import TableRow from "./components/Table.Row";
 import { Caption } from "./styles";
 
 // Types
-import { TableType, RowType } from'./types';
+import { TableType, RowType } from "./types";
 
 ///////////////////////////////////////////////////////////// Create Rows
 
@@ -20,7 +20,12 @@ function rowsFactory(rows: RowType[]) {
       const id = `row__${key}`;
       const hasChildren = !!childData && childData.rows.length > 0;
       return (
-        <TableRow key={id} data={row.data} hasChildren={hasChildren}>
+        <TableRow
+          key={id}
+          _id={row._id}
+          data={row.data}
+          hasChildren={hasChildren}
+        >
           {hasChildren && childData && tableFactory(childData)}
         </TableRow>
       );
@@ -30,14 +35,13 @@ function rowsFactory(rows: RowType[]) {
 
 //////////////////////////////////////////////////////////// Create Table
 
-export function tableFactory({ headers, rows, title, childTable }: TableType) {
+export function tableFactory({ headers, rows, title }: TableType) {
   return (
     <table>
       {title && <Caption>{title}</Caption>}
       <tbody>
         {headers && <TableHead data={headers} />}
         {rows && rowsFactory(rows)}
-        {childTable}
       </tbody>
     </table>
   );

@@ -1,12 +1,12 @@
 
 export type TableType = {
   title?: string | null;
-  headers: string[];
+  headers: string[] | null;
   rows: RowType[];
-  childTable?: any;
 };
 
 export type RowType = {
+  _id?: string | null;
   data: {
     [key: string]: string
   };
@@ -14,9 +14,11 @@ export type RowType = {
   [key: string]: any;
 };
 
+
+
 export type JsonType = {
   data: {
     [key: string]: string
   };
-  [key: string]: object;
+  [key: string]: object
 };
