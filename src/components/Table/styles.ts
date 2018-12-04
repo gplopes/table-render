@@ -73,7 +73,6 @@ export const Title = styled(Cell)`
   }
 `;
 
-
 export const IconWrap = styled.div`
   width: 30px;
   height: 30px;
@@ -85,6 +84,7 @@ export const IconWrap = styled.div`
   align-items: center;
   justify-content: center;
   &:hover {
-    background-color: transparent;
+    color: white;
+    background-color: #5C5FEB;
   }
 `;
