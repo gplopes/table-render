@@ -1,26 +1,34 @@
-import React, { ReactNode } from "react";
-import randomColor from "randomcolor";
+import randomColor from 'randomcolor';
+import React, { ReactNode } from 'react';
+import { connect } from 'react-redux';
 
-import { Row, CellSpan, LineIndicator } from "../styles";
+import { CellSpan, Container, LineIndicator, Row } from '../styles';
+import { StoreType } from '../types';
 
 ///////////////////////////////////// Props
 
 type PropsType = {
   children: ReactNode;
+  tableSize: number;
 };
 
-///////////////////////////////////// Component
+///////////////////////////////////// UI Component
 
 function TableChild(props: PropsType) {
-  const color = randomColor({ luminosity: "dark" });
+  const color = randomColor({ luminosity: 'dark' });
   return (
     <Row>
       <LineIndicator color={color} />
-      <CellSpan className="CellSpan" colSpan={10}>
-        {props.children}
+      <CellSpan className="CellSpan" colSpan={props.tableSize}>
+        <Container>{props.children}</Container>
       </CellSpan>
     </Row>
   );
 }
 
-export default TableChild;
+////////////////////////////////// Connect
+
+const mapStateToProps = (state: StoreType) => ({
+  tableSize: state.headers ? state.headers.length : 0
+});
+export default connect(mapStateToProps)(TableChild);

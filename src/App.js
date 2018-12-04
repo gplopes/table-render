@@ -1,17 +1,17 @@
 import React from "react";
-
+// Components
 import Table from "./components/Table";
 import dataJSON from "../src/data.json";
 
 function App() {
   return (
-    <div>
+    <main>
       <section>
         <div className="container">
-          <Table data={dataJSON} />
+          <Table data={ dataJSON } />
         </div>
       </section>
-    </div>
-  );
+    </main>
+    );
 }
 export default App;

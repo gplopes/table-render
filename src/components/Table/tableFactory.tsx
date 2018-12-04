@@ -8,7 +8,7 @@ import TableRow from "./components/Table.Row";
 import { Caption } from "./styles";
 
 // Types
-import { TableType, RowType } from "./types";
+import { RowType, TableType } from "./types";
 
 ///////////////////////////////////////////////////////////// Create Rows
 

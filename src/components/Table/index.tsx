@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 
-import Table from "./Table";
+import Table from "./components/Table";
 import tableStore, { registerTable } from "./store/tableStore";
 import { graphCreator } from "./tableGraph";
 

@@ -2,11 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 
 // Styled Components
-import { Container } from "./styles";
+import { Container } from "../styles";
 
 // Factories
-import { tableFactory } from "./tableFactory";
-import { TableType } from "./types";
+import { tableFactory } from "../tableFactory";
+import { StoreType, TableType } from "../types";
 
 ////////////////////// Types
 
@@ -17,12 +17,11 @@ type PropsType = {
 ///////////////////////////// UI Component
 
 function Table(props: PropsType) {
-  console.log(props);
   return <Container>{props.table && tableFactory(props.table)}</Container>;
 }
 
 ////////////////////////////////// Connect
 
-const mapStateToProps = (state: any) => ({ table: state });
+const mapStateToProps = (state: StoreType) => ({ table: state });
 
 export default connect(mapStateToProps)(Table);

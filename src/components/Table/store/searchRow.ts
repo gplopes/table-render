@@ -1,28 +1,31 @@
-import isObject from "lodash/isObject";
+import isObject from 'lodash/isObject';
 
-let itemFound = false;
-let newTable = [];
+export function searchRow(table: object, id: string) {
+  let itemFound: boolean = false;
+  const tablePlaceholder: object = { ...table };
 
-export function searchDeepRow(table: any, id: string) {
-  if (itemFound) {
-    console.log('item found -->', itemFound);
-    return false;
-  }
-  if (table instanceof Array) {
-    table.forEach(item => {
-      if (item._id === id) {
-        itemFound = true;
-      } else {
-      searchDeepRow(item, id);
-      }
-    });
-  } else if (isObject(table)) {
-    for (let prop of Object.keys(table)) {
-      if (typeof table[prop] !== "string") {
-        searchDeepRow(table[prop], id);
+  function searchDeepRow(tableDeep: any, itemId: string) {
+    if (itemFound) {
+      return false;
+    }
+
+    if (tableDeep instanceof Array) {
+      tableDeep.forEach((item, key) => {
+        if (item._id === itemId) {
+          itemFound = true;
+          tableDeep.splice(key, 1);
+        } else {
+          searchDeepRow(item, id);
+        }
+      });
+    } else if (isObject(tableDeep)) {
+      for (const prop of Object.keys(tableDeep)) {
+        if (typeof tableDeep[prop] !== 'string') {
+          searchDeepRow(tableDeep[prop], id);
+        }
       }
     }
   }
+  searchDeepRow(tablePlaceholder, id);
+  return tablePlaceholder;
 }
-
-export function searchRow(table: any) {}

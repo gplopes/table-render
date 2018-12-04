@@ -1,29 +1,29 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 
 // Store
-import { removeItem } from "../store/tableStore";
+import { removeItem } from '../store/tableStore';
 
 // Styled
-import { Row, Cell, IconCell } from "../styles";
+import { Cell, IconCell, Row } from '../styles';
 
 // Table Items
-import Collapse from "./Table.Collapse";
-import TableChild from "./Table.Child";
+import TableChild from './Table.Child';
+import Options from './Table.Options';
 
 ///////////////////////////////// Props
 
 type PropsType = {
   _id?: string | null;
   data: any;
-  removeRow(id: string): void
   hasChildren: boolean;
+  removeRow(id: string): void;
 };
 
 const defaultProps: PropsType = {
-  removeRow: () => {},
   data: { data: {}, children: null },
-  hasChildren: false
+  hasChildren: false,
+  removeRow: () => null
 };
 
 //////////////////////////////////////////// State
@@ -35,44 +35,45 @@ type StateType = {
 ////////////////////////////////////////////// UI Component
 
 class TableRow extends Component<PropsType, StateType> {
-  static defaultProps = defaultProps;
-  readonly state = {
+  public static defaultProps = defaultProps;
+  public readonly state = {
     showChildren: false
   };
 
-  toggleHandler = () => {
+  public toggleHandler = () => {
     this.setState(prev => ({ showChildren: !prev.showChildren }));
   };
-  clickHandler = () => {
+
+  public deleteHandler = () => {
     const { _id, removeRow } = this.props;
-    if (_id && removeRow) removeRow(_id);
+    if (_id && removeRow) {
+      this.setState({ showChildren: false }, () => removeRow(_id));
+    }
   };
 
-  _renderCell(value: string, index: number) {
+  public _renderCell(value: string, index: number) {
     const key = `row_inner_${index}`;
     return <Cell key={key}>{value}</Cell>;
   }
 
-  _renderToggler = () => {
-    const { hasChildren } = this.props;
-    const collapseProps = {
-      toggle: this.toggleHandler,
-      open: this.state.showChildren
-    };
-    return hasChildren ? <Collapse {...collapseProps} /> : <IconCell />;
-  };
-
-  render() {
+  public render() {
     const { data, children } = this.props;
     const { showChildren } = this.state;
     const dataValues = Object.keys(data).map((key: string) => data[key]);
+
+    const optionProps = {
+      delete: this.deleteHandler,
+      open: this.state.showChildren,
+      showToggle: this.props.hasChildren,
+      toggle: this.toggleHandler
+    };
     return (
       <Fragment>
-        <Row onClick={this.clickHandler}>
-          {this._renderToggler()}
+        <Row>
+          <Options {...optionProps} />
           {dataValues.map(this._renderCell)}
         </Row>
-        {showChildren && <TableChild children={children} />}
+        {showChildren && children && <TableChild children={children} />}
       </Fragment>
     );
   }
@@ -86,4 +87,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   }
 });
 
-export default connect(null, mapDispatchToProps)(TableRow);
+export default connect(
+  null,
+  mapDispatchToProps
+)(TableRow);

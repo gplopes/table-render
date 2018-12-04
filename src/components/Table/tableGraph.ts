@@ -1,18 +1,12 @@
-import union from "lodash/union";
-import isEqual from "lodash/isEqual";
-import uniqid from "uniqid";
+import isEqual from 'lodash/isEqual';
+import union from 'lodash/union';
+import uniqid from 'uniqid';
 
-import { RowType, TableType, JsonType } from "./types";
+import { JsonType, RowType, TableType } from './types';
 
-///////////////////////////////////////////////////////////// Types
+///////////////////////////////////////////////////////////// Deep Graph Creation
 
-type GetRowDataType = {
-  data: RowType;
-  _keys: string[];
-};
-
-///////////////////////////////////////////////////////////// Types
-function getChildren(layer: any, tableChild: TableType | null, path?: string) {
+function deepGraph(layer: any, tableChild: TableType | null, path?: string) {
   if (layer instanceof Array) {
     layer.forEach(item => {
       if (item.data && tableChild) {
@@ -24,14 +18,16 @@ function getChildren(layer: any, tableChild: TableType | null, path?: string) {
           : tableChild.headers;
 
         // Table Rows
-        isEqual(tableChild.headers, _keys) && tableChild.rows.push(data);
+        if (isEqual(tableChild.headers, _keys)) {
+          tableChild.rows.push(data);
+        }
       }
-      getChildren(item, tableChild, path);
+      deepGraph(item, tableChild, path);
     });
-  } else if (typeof layer === "object") {
-    for (let prop of Object.keys(layer)) {
-      if (prop !== "data" && typeof layer[prop] !== "string") {
-        getChildren(layer[prop], tableChild, prop);
+  } else if (typeof layer === 'object') {
+    for (const prop of Object.keys(layer)) {
+      if (prop !== 'data' && typeof layer[prop] !== 'string') {
+        deepGraph(layer[prop], tableChild, prop);
         if (tableChild && path !== null && path !== undefined) {
           tableChild.title = `/${path}`;
         }
@@ -40,34 +36,41 @@ function getChildren(layer: any, tableChild: TableType | null, path?: string) {
   }
 }
 
-///////////////////////////////////////////////////////////// Get All Row+Children Data
+///////////////////////////////////////////////////////////// Get Row Data
+
+type GetRowDataType = {
+  data: RowType;
+  _keys: string[];
+}
 
 function getRowData(dataLayer: JsonType): GetRowDataType {
   const rowID: string = uniqid();
-  let _children: object | null = null;
-  let _keys: string[] = [];
-  let rowData: RowType = {
+  let childrenTemp: object | null = null;
+  let keysTemp: string[] = [];
+  const rowData: RowType = {
     _id: null,
+    children: { rows: [], headers: null, title: null },
     data: {},
-    children: { rows: [], headers: null, title: null }
   };
 
-  if (typeof dataLayer === "object") {
+  if (typeof dataLayer === 'object') {
     const data = dataLayer.data;
     rowData.data = data;
     rowData._id = rowID;
 
-    _keys = Object.keys(data);
-    _children = Object.keys(dataLayer)
-      .filter(key => key !== "data")
+    keysTemp = Object.keys(data);
+    childrenTemp = Object.keys(dataLayer)
+      .filter(key => key !== 'data')
       .map(key => dataLayer[key]);
   }
-  _children && getChildren(_children, rowData.children);
+  if (childrenTemp) {
+    deepGraph(childrenTemp, rowData.children);
+  }
 
-  return { data: rowData, _keys };
+  return { data: rowData, _keys: keysTemp };
 }
 
-///////////////////////////////////////////////////////////// Table Graph Creator
+///////////////////////////////////////////////////////////// Graph Creator
 
 export function graphCreator(jsonData: JsonType[]): TableType {
   const graph: TableType = { rows: [], headers: null };
@@ -77,6 +80,5 @@ export function graphCreator(jsonData: JsonType[]): TableType {
     graph.rows.push(data);
     graph.headers = union(graph.headers, _keys);
   });
-  //console.log(graph);
   return graph;
 }

@@ -1,5 +1,5 @@
 
-const bg = "#f4f8f9";
+const bg = "#f9fafe";
 const blue = "#412ae1";
 
 export default {

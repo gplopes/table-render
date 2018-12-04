@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 
-import { searchDeepRow } from './searchRow';
 import { TableType } from "../types";
+import { searchRow } from './searchRow';
 
 //////////////////////////////////////// Types
 
@@ -18,13 +18,13 @@ type Payload = {
 ///////////////////////////////////////////////////////////////
 
 export const registerTable = (payload: TableType): Payload => ({
+  payload,
   type: ADD_TABLE,
-  payload
 });
 
 export const removeItem = (payload: string): Payload => ({
+  payload,
   type: REMOVE_ITEM,
-  payload
 });
 
 ///////////////////////////////////////// Functions
@@ -34,8 +34,7 @@ const tableReducer = (state: object = {}, action: Payload) => {
     case ADD_TABLE:
       return typeof action.payload === 'object' ? { ...state, ...action.payload } : [];
     case REMOVE_ITEM:
-      typeof action.payload === 'string' && searchDeepRow(state, action.payload);
-      return state;
+      return typeof action.payload === 'string' ? searchRow(state, action.payload) : [];
     default:
       return state;
   }

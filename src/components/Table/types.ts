@@ -1,14 +1,15 @@
-
 export type TableType = {
   title?: string | null;
   headers: string[] | null;
   rows: RowType[];
 };
 
+export type StoreType = TableType;
+
 export type RowType = {
   _id?: string | null;
   data: {
-    [key: string]: string
+    [key: string]: string;
   };
   children: TableType | null;
   [key: string]: any;
@@ -16,7 +17,7 @@ export type RowType = {
 
 export type JsonType = {
   data: {
-    [key: string]: string
+    [key: string]: string;
   };
-  [key: string]: object
+  [key: string]: object;
 };
