@@ -21,12 +21,17 @@ to lint:
 
 # Table Folder Structure
 
-`./components` - React Components/Table's part Components
-`./store` - Redux Store
-`./styles.ts` - Styled Components
-`./tableFactory` - helpers functions to create Table components
-`./tableGraph` - analyze/scan and create structure data object from JSON output
-`./index` - server Table with Redux Provider
+`./components` - React Components/Table's part Components.
+
+`./store` - Redux Store.
+
+`./styles.ts` - Styled Components.
+
+`./tableFactory` - helpers functions to create Table components.
+
+`./tableGraph` - analyze/scan and create structure data object from JSON output.
+
+`./index` - server Table with Redux Provider.
 
 
 ## Built with
