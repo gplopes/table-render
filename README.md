@@ -1,4 +1,4 @@
-# Ataccama - Table
+# Table Render
 
 Project is a demo for `Table Feature Component`, the component can understand a _JSON_ structure object/list
 and generate a table in its hierarchy-tree automatically. Everything is managed inside the Table's folder,
